@@ -4,9 +4,32 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # Set the path to your Chrome webdriver executable
+def read_credentials_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            # Read the contents of the file and return it as a string
+            return file.read().splitlines()
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+    except Exception as e:
+        print(f"Error occurred while reading the file: {e}")
+
 
 # Open the Chrome browser
-print("11111")
+file_path = 'Credentials.txt'
+credentials = read_credentials_file(file_path)
+if len(credentials) == 2:
+    print("Contents of credentials.txt:")
+    email = credentials[0]
+    password = credentials[1]
+    print(email)
+    print(password)
+else:
+    exit("Credentials not correct please put first line email second line password")
+email = credentials[0]
+password = credentials[1]
+
+
 driver = webdriver.Chrome()
 
 print(driver)
@@ -15,6 +38,7 @@ print("2222")
 driver.get('https://www.linkedin.com')
 
 # # Find the username and password input fields, and submit the credentials
+WebDriverWait(driver, 20).until(EC.title_contains('LinkedIn'))
 try:
     
     username_field = driver.find_element(By.ID, 'session_key')
@@ -27,17 +51,16 @@ password_field.send_keys(password)
 password_field.send_keys(Keys.RETURN)
 
 # # Wait for the login process to complete
-WebDriverWait(driver, 20).until(EC.title_contains('LinkedIn'))
 
 # Navigate ts the Jobs page
 driver.get('https://www.linkedin.com/jobs')
 
 #need to fix here !!!! 
-#click on job search with empty field
 empty = ''
-jobsearch = driver.find_element(By.ID, 'keyword-typeahead-instance-ember248')
+jobsearch = driver.find_element(By.ID, 'jobs-search-box-keyword-id-ember386')
 jobsearch.send_keys(empty)
 jobsearch.send_keys(Keys.RETURN)
+
 
 #click on data posted and click on past 24 hours
 date_posted_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'ember690')))
