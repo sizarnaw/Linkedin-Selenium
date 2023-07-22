@@ -55,7 +55,7 @@ password_field.send_keys(Keys.RETURN)
 # Navigate ts the Jobs page
 driver.get('https://www.linkedin.com/jobs')
 
-#need to fix here !!!! 
+#need to fdix here !!!! 
 empty = ''
 jobsearch = driver.find_element(By.ID, 'jobs-search-box-keyword-id-ember386')
 jobsearch.send_keys(empty)
